@@ -1,0 +1,4593 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simo Cosmétique - Your One-Stop Makeup Shop</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/png" href="logo1.png">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #f8f3ed 60%, #e6b8a2 100%);
+            font-family: Georgia, serif;
+            color: #333;
+            min-height: 100vh;
+        }
+        
+        /* Loading Spinner */
+        .loading-spinner {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 9999;
+        }
+        
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 5px solid #f3f3f3;
+            border-top: 5px solid #7a5c2e;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        /* Header Styles */
+        #header-delivery-msg {
+            background: #7a5c2e;
+            color: #fff;
+            text-align: center;
+            padding: 0.5rem;
+            font-size: 0.9rem;
+            font-family: Georgia, serif;
+        }
+        
+        header {
+            background: #fff;
+            padding: 1rem 2rem;
+            box-shadow: 0 2px 8px rgba(122, 92, 46, 0.1);
+        }
+        
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .logo-text-vertical {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            cursor: pointer;
+        }
+        
+        .nav-icons {
+            display: flex;
+            gap: 1.5rem;
+            align-items: center;
+        }
+        
+        .nav-icons i {
+            font-size: 1.2rem;
+            color: #7a5c2e;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+        
+        .nav-icons i:hover {
+            color: #e6b8a2;
+        }
+        
+        .cart-icon {
+            position: relative;
+        }
+        
+        .cart-count {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background: #e6b8a2;
+            color: white;
+            border-radius: 50%;
+            padding: 2px 6px;
+            font-size: 0.7rem;
+            font-weight: bold;
+            display: none;
+        }
+        
+        .user-menu {
+            position: relative;
+        }
+        
+        .user-dropdown {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background: white;
+            border: 1px solid #e6b8a2;
+            border-radius: 8px;
+            padding: 0.5rem;
+            margin-top: 0.5rem;
+            display: none;
+            min-width: 150px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        
+        .user-dropdown.active {
+            display: block;
+        }
+        
+        .user-dropdown a {
+            display: block;
+            padding: 0.5rem 1rem;
+            color: #7a5c2e;
+            text-decoration: none;
+            border-radius: 4px;
+            transition: background 0.2s;
+        }
+        
+        .user-dropdown a:hover {
+            background: #f8f3ed;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            margin-top: 1rem;
+            justify-content: center;
+        }
+        
+        .nav-links a {
+            color: #7a5c2e;
+            text-decoration: none;
+            font-family: Georgia, serif;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+        
+        .nav-links a:hover {
+            color: #e6b8a2;
+        }
+        
+        /* Home Slider */
+        #home-slider {
+            max-width: 900px;
+            margin: 2rem auto 1.5rem;
+            border-radius: 16px;
+            overflow: hidden;
+            position: relative;
+            box-shadow: 0 8px 32px rgba(122, 92, 46, 0.13);
+            background: #fff;
+        }
+        
+        #slider-img {
+            width: 100%;
+            height: 400px;
+            object-fit: cover;
+            border-radius: 16px;
+        }
+        
+        /* Product Grid */
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            padding: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        /* Product Card Styles */
+        .product-card {
+            background: #fff;
+            border-radius: 16px;
+            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+            box-shadow: 0 2px 12px rgba(122, 92, 46, 0.08);
+            position: relative;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .product-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 32px rgba(122, 92, 46, 0.15);
+        }
+        
+        /* Image Container */
+        .product-image-container {
+            position: relative;
+            overflow: hidden;
+            height: 240px;
+            background: #f8f3ed;
+        }
+        
+        .product-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .product-card:hover img {
+            transform: scale(1.08);
+        }
+        
+        /* Stock Badge */
+        .stock-indicator {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            color: #7a5c2e;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        .stock-low {
+            background: rgba(255, 107, 107, 0.95);
+            color: white;
+        }
+        
+        /* Product Info */
+        .product-info {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 1rem;
+        }
+        
+        .title-wrapper {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 80px;
+        }
+        
+        .product-title {
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin: 0;
+        }
+        
+        .product-card h3 {
+            color: #7a5c2e;
+            margin-bottom: 0.5rem;
+            font-size: 1.2rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .product-card h3 i {
+            font-size: 0.9rem;
+            color: #e6b8a2;
+            opacity: 0;
+            transform: translateX(-10px);
+            transition: all 0.3s ease;
+        }
+        
+        .product-card:hover h3 i {
+            opacity: 1;
+            transform: translateX(0);
+        }
+        
+        .product-card p {
+            color: #666;
+            font-size: 0.9rem;
+            line-height: 1.5;
+            margin-bottom: 1rem;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+        
+        /* Price Display */
+        .product-price-section {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+        }
+        
+        .product-price {
+            color: #7a5c2e;
+            font-weight: bold;
+            font-size: 1.3rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .product-price i {
+            font-size: 1rem;
+            color: #e6b8a2;
+        }
+        
+        .variant-count {
+            background: #f8f3ed;
+            color: #7a5c2e;
+            padding: 0.3rem 0.8rem;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+        
+        /* Action Buttons */
+        .product-actions {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: auto;
+        }
+        
+        .product-actions .btn {
+            flex: 1;
+            padding: 0.8rem 1rem;
+            font-size: 0.85rem;
+            opacity: 0.9;
+            transform: translateY(0);
+            transition: all 0.3s ease;
+        }
+        
+        .product-card:hover .product-actions .btn {
+            opacity: 1;
+            transform: translateY(-2px);
+        }
+        
+        /* Quick View Overlay */
+        .quick-view-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(255, 255, 255, 0);
+            backdrop-filter: blur(0px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.3s ease;
+        }
+        
+        .product-card:hover .quick-view-overlay {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(2px);
+            opacity: 1;
+            pointer-events: auto;
+        }
+        
+        .quick-view-btn {
+            background: rgba(255, 255, 255, 0.95);
+            color: #7a5c2e;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 25px;
+            font-weight: 600;
+            cursor: pointer;
+            transform: scale(0.8);
+            opacity: 0;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
+        
+        .product-card:hover .quick-view-btn {
+            transform: scale(1);
+            opacity: 1;
+        }
+        
+        .quick-view-btn:hover {
+            background: #7a5c2e;
+            color: white;
+            transform: scale(1.05);
+        }
+        
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            backdrop-filter: blur(5px);
+        }
+        
+        .modal-content {
+            background: white;
+            border-radius: 20px;
+            padding: 2rem;
+            max-width: 90%;
+            max-height: 90%;
+            overflow-y: auto;
+            position: relative;
+            animation: modalSlideIn 0.3s ease;
+        }
+        
+        @keyframes modalSlideIn {
+            from {
+                transform: translateY(30px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+        
+        .close-modal {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            font-size: 2rem;
+            color: #999;
+            cursor: pointer;
+            background: none;
+            border: none;
+            transition: all 0.2s ease;
+        }
+        
+        .close-modal:hover {
+            color: #7a5c2e;
+            transform: rotate(90deg);
+        }
+        
+        /* Modal Product Section */
+        .modal-product-section {
+            background: #f8f3ed;
+            padding: 1.5rem;
+            border-radius: 12px;
+            margin: 1.5rem 0;
+        }
+        
+        .variant-selector {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+        }
+        
+        .variant-option {
+            background: white;
+            color: #7a5c2e;
+            border: 2px solid #e6b8a2;
+            border-radius: 20px;
+            padding: 0.5rem 1rem;
+            font-size: 0.9rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .variant-option::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 0;
+            height: 100%;
+            background: #7a5c2e;
+            transition: width 0.3s ease;
+            z-index: -1;
+        }
+        
+        .variant-option:hover::before,
+        .variant-option.selected::before {
+            width: 100%;
+        }
+        
+        .variant-option:hover,
+        .variant-option.selected {
+            color: white;
+            border-color: #7a5c2e;
+            transform: translateY(-2px);
+        }
+        
+        /* Quantity Selector Modal */
+        .quantity-selector-modal {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+        
+        .quantity-btn-modal {
+            width: 40px;
+            height: 40px;
+            border: 2px solid #e6b8a2;
+            background: white;
+            color: #7a5c2e;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.2rem;
+            transition: all 0.2s ease;
+        }
+        
+        .quantity-btn-modal:hover {
+            background: #7a5c2e;
+            color: white;
+            transform: scale(1.1);
+        }
+        
+        .quantity-display-modal {
+            min-width: 50px;
+            text-align: center;
+            font-weight: bold;
+            font-size: 1.2rem;
+            color: #7a5c2e;
+        }
+        
+        /* Variant Form Modal */
+        .variant-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        
+        .variant-item {
+            background: #f8f3ed;
+            padding: 1rem;
+            border-radius: 8px;
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .variant-item-info {
+            flex: 1;
+            display: grid;
+            grid-template-columns: 1fr 2fr 1fr 1fr;
+            gap: 1rem;
+            align-items: center;
+        }
+        
+        .variant-type-badge {
+            background: #7a5c2e;
+            color: white;
+            padding: 0.3rem 0.8rem;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            text-align: center;
+        }
+        
+        .variant-item button {
+            background: #ff6b6b;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .variant-item button:hover {
+            background: #ff5252;
+            transform: scale(1.05);
+        }
+        
+        /* Button Styles */
+        .btn {
+            padding: 0.7rem 1.5rem;
+            border: none;
+            border-radius: 25px;
+            font-family: Georgia, serif;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            text-decoration: none;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+        
+        .btn:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(45deg, #7a5c2e, #8b6a3a);
+            color: white;
+            box-shadow: 0 4px 15px rgba(122, 92, 46, 0.3);
+        }
+        
+        .btn-primary:hover {
+            background: linear-gradient(45deg, #8b6a3a, #9c7545);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(122, 92, 46, 0.4);
+        }
+        
+        .btn-secondary {
+            background: linear-gradient(45deg, #e6b8a2, #f0c4ae);
+            color: white;
+            box-shadow: 0 4px 15px rgba(230, 184, 162, 0.3);
+        }
+        
+        .btn-secondary:hover {
+            background: linear-gradient(45deg, #f0c4ae, #fad0ba);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(230, 184, 162, 0.4);
+        }
+        
+        .btn-outline {
+            background: transparent;
+            border: 2px solid #e6b8a2;
+            color: #7a5c2e;
+        }
+        
+        .btn-outline:hover {
+            background: #e6b8a2;
+            color: white;
+        }
+        
+        /* Admin Panel */
+        .admin-dashboard {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+        }
+        
+        .dashboard-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .stat-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 16px rgba(122, 92, 46, 0.1);
+            text-align: center;
+        }
+        
+        .stat-card i {
+            font-size: 2.5rem;
+            color: #e6b8a2;
+            margin-bottom: 1rem;
+        }
+        
+        .stat-card h3 {
+            color: #7a5c2e;
+            margin-bottom: 0.5rem;
+        }
+        
+        .stat-card p {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #333;
+        }
+        
+        .admin-panel {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 4px 16px rgba(122, 92, 46, 0.1);
+        }
+        
+        .admin-nav {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            border-bottom: 2px solid #e6b8a2;
+            padding-bottom: 1rem;
+            flex-wrap: wrap;
+        }
+        
+        .admin-nav button {
+            padding: 0.7rem 1.5rem;
+            border: none;
+            background: #f8f3ed;
+            color: #7a5c2e;
+            border-radius: 8px;
+            cursor: pointer;
+            font-family: Georgia, serif;
+            transition: all 0.3s ease;
+        }
+        
+        .admin-nav button.active {
+            background: #7a5c2e;
+            color: white;
+        }
+        
+        /* Form Styles */
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #7a5c2e;
+            font-weight: bold;
+        }
+        
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.8rem;
+            border: 2px solid #e6b8a2;
+            border-radius: 8px;
+            font-family: Georgia, serif;
+            transition: border-color 0.3s ease;
+        }
+        
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #7a5c2e;
+        }
+        
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+        
+        /* Table Styles */
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+        }
+        
+        .data-table th,
+        .data-table td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid #e6b8a2;
+        }
+        
+        .data-table th {
+            background: #f8f3ed;
+            color: #7a5c2e;
+            font-weight: bold;
+        }
+        
+        .data-table tr:hover {
+            background: #f8f3ed;
+        }
+        
+        /* Auth Forms */
+        .auth-container {
+            max-width: 400px;
+            margin: 3rem auto;
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+        
+        .auth-tabs {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            border-bottom: 2px solid #e6b8a2;
+        }
+        
+        .auth-tab {
+            padding: 0.5rem 1rem;
+            background: none;
+            border: none;
+            color: #7a5c2e;
+            font-size: 1.1rem;
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+            transition: all 0.3s ease;
+        }
+        
+        .auth-tab.active {
+            border-bottom-color: #7a5c2e;
+            font-weight: bold;
+        }
+        
+        /* Toast Notification */
+        .toast {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #7a5c2e;
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 12px;
+            font-family: Georgia, serif;
+            z-index: 10000;
+            opacity: 0;
+            transform: translateY(-20px);
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
+        
+        .toast.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .toast.error {
+            background: #ff6b6b;
+        }
+        
+        .toast.success {
+            background: #27ae60;
+        }
+        
+        /* Checkout Styles */
+        .checkout-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #f8f3ed;
+            z-index: 1000;
+            overflow-y: auto;
+        }
+        
+        .checkout-wrapper {
+            display: grid;
+            grid-template-columns: 1fr 400px;
+            gap: 3rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        .checkout-form-section {
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 16px rgba(122, 92, 46, 0.1);
+        }
+        
+        .checkout-summary-section {
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 16px rgba(122, 92, 46, 0.1);
+            height: fit-content;
+            position: sticky;
+            top: 2rem;
+        }
+        
+        .radio-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+        
+        .radio-option {
+            display: flex;
+            align-items: center;
+            padding: 1rem;
+            border: 2px solid #e6b8a2;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .radio-option.selected {
+            border-color: #7a5c2e;
+            background: #f8f3ed;
+        }
+        
+        .summary-product {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #e6b8a2;
+        }
+        
+        .summary-product img {
+            width: 60px;
+            height: 60px;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+        
+        .summary-total {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+            font-family: Georgia, serif;
+        }
+        
+        .exit-btn {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background: #7a5c2e;
+            color: white;
+            border: none;
+            padding: 0.7rem 1.5rem;
+            border-radius: 25px;
+            cursor: pointer;
+            font-family: Georgia, serif;
+            z-index: 1001;
+        }
+        
+        /* Hidden by default */
+        .hidden {
+            display: none !important;
+        }
+        
+        /* Variant Summary Display */
+        .variant-summary {
+            background: #f8f3ed;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-top: 1rem;
+        }
+        
+        .variant-summary-title {
+            color: #7a5c2e;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .variant-summary-grid {
+            display: grid;
+            gap: 0.5rem;
+        }
+        
+        .variant-summary-item {
+            background: white;
+            padding: 0.8rem;
+            border-radius: 6px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border: 1px solid #e6b8a2;
+        }
+        
+        .variant-summary-item-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .variant-summary-item-price {
+            color: #7a5c2e;
+            font-weight: bold;
+        }
+        
+        /* Profile Section Styles */
+        .profile-section {
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(122, 92, 46, 0.1);
+        }
+        
+        .profile-section h2 {
+            color: #7a5c2e;
+            margin-bottom: 2rem;
+            text-align: center;
+            font-family: Georgia, serif;
+        }
+        
+        .profile-section h3 {
+            color: #7a5c2e;
+            margin-bottom: 1.5rem;
+            border-bottom: 2px solid #f8f3ed;
+            padding-bottom: 0.5rem;
+        }
+        
+        .profile-info {
+            margin-bottom: 3rem;
+        }
+        
+        .info-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+        }
+        
+        .info-item label {
+            font-weight: bold;
+            color: #7a5c2e;
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+        
+        .info-item span {
+            color: #333;
+        }
+        
+        .change-password-section {
+            margin-top: 3rem;
+        }
+        
+        .change-password-section form {
+            max-width: 500px;
+        }
+        
+        .change-password-section .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .change-password-section input {
+            width: 100%;
+            padding: 0.8rem;
+            border: 2px solid #e6b8a2;
+            border-radius: 8px;
+            font-size: 1rem;
+            background: #f8f3ed;
+        }
+        
+        .change-password-section input:focus {
+            outline: none;
+            border-color: #7a5c2e;
+            background: white;
+        }
+        
+        .change-password-section button {
+            background: #7a5c2e;
+            color: white;
+            padding: 0.8rem 2rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        
+        .change-password-section button:hover {
+            background: #8b6d3f;
+        }
+        
+        /* Orders Section Styles */
+        .orders-section {
+            padding: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .orders-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+        
+        .order-card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            padding: 1.5rem;
+            transition: transform 0.2s, box-shadow 0.2s;
+            border: 1px solid #e0e0e0;
+        }
+        
+        .order-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+        }
+        
+        .order-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        
+        .order-info h3 {
+            margin: 0;
+            color: #7a5c2e;
+            font-size: 1.2rem;
+        }
+        
+        .order-date {
+            margin: 0.5rem 0 0 0;
+            color: #666;
+            font-size: 0.9rem;
+        }
+        
+        .status-badge {
+            padding: 0.4rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+        
+        .status-badge.pending {
+            background: #fff3cd;
+            color: #856404;
+        }
+        
+        .status-badge.confirmed {
+            background: #d1ecf1;
+            color: #0c5460;
+        }
+        
+        .status-badge.shipped {
+            background: #d4edda;
+            color: #155724;
+        }
+        
+        .status-badge.delivered {
+            background: #c3e6cb;
+            color: #155724;
+        }
+        
+        .status-badge.cancelled {
+            background: #f8d7da;
+            color: #721c24;
+        }
+        
+        .order-items {
+            margin-bottom: 1rem;
+        }
+        
+        .order-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid #f8f8f8;
+        }
+        
+        .order-item:last-child {
+            border-bottom: none;
+        }
+        
+        .item-name {
+            font-weight: 500;
+            color: #333;
+        }
+        
+        .item-details {
+            color: #666;
+            font-size: 0.9rem;
+        }
+        
+        .more-items {
+            text-align: center;
+            color: #7a5c2e;
+            font-style: italic;
+            padding: 0.5rem 0;
+        }
+        
+        .order-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 1rem;
+            border-top: 1px solid #f0f0f0;
+        }
+        
+        .order-total {
+            font-size: 1.1rem;
+            color: #7a5c2e;
+        }
+        
+        /* Order Details Modal Styles */
+        .order-detail-section {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            border-left: 4px solid #7a5c2e;
+        }
+        
+        .order-detail-section h3 {
+            margin-top: 0;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .delivery-info p {
+            margin: 0.5rem 0;
+            padding: 0.5rem;
+            background: white;
+            border-radius: 4px;
+            border-left: 3px solid #7a5c2e;
+        }
+        
+        .order-items-table {
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        .order-item-row {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 1rem;
+            padding: 1rem;
+            border-bottom: 1px solid #f0f0f0;
+            align-items: center;
+        }
+        
+        .order-item-row:last-child {
+            border-bottom: none;
+        }
+        
+        .order-item-row:nth-child(even) {
+            background: #f8f9fa;
+        }
+        
+        .item-info .item-name {
+            font-weight: 600;
+            color: #333;
+        }
+        
+        .item-info .item-variant {
+            color: #666;
+            font-size: 0.9rem;
+            margin-top: 0.2rem;
+        }
+        
+        .order-summary {
+            background: white;
+            border-radius: 8px;
+            padding: 1rem;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        
+        .summary-row:last-child {
+            border-bottom: none;
+        }
+        
+        .summary-row.total {
+            font-size: 1.1rem;
+            border-top: 2px solid #7a5c2e;
+            margin-top: 0.5rem;
+            padding-top: 1rem;
+        }
+        
+        .order-status-info p {
+            margin: 0.5rem 0;
+            padding: 0.5rem;
+            background: white;
+            border-radius: 4px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        /* Admin Order Details Modal Improvements */
+        .admin-order-modal .modal-content {
+            max-width: 1000px;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+        
+        .admin-order-modal .order-detail-section {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border: 1px solid #dee2e6;
+        }
+        
+        .admin-order-modal .order-items-table {
+            border: 1px solid #dee2e6;
+        }
+        
+        .admin-order-modal .order-item-row {
+            grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+        }
+        
+        .admin-order-modal .order-item-row::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, #7a5c2e, transparent);
+        }
+        
+        /* Reports Section Styles */
+        .reports-section {
+            padding: 2rem;
+        }
+        
+        .reports-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+        
+        .report-card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            padding: 1.5rem;
+            border: 1px solid #e0e0e0;
+        }
+        
+        .report-card h3 {
+            color: #7a5c2e;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .report-filters {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            border: 1px solid #dee2e6;
+        }
+        
+        .report-filters h3 {
+            color: #7a5c2e;
+            margin-bottom: 1rem;
+        }
+        
+        .filter-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+        
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .filter-group label {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: #333;
+        }
+        
+        .filter-group input,
+        .filter-group select {
+            padding: 0.75rem;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 0.9rem;
+        }
+        
+        .report-actions {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        
+        .report-table {
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            margin-top: 1rem;
+        }
+        
+        .report-table table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        .report-table th,
+        .report-table td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        
+        .report-table th {
+            background: #7a5c2e;
+            color: white;
+            font-weight: 600;
+        }
+        
+        .report-table tr:nth-child(even) {
+            background: #f8f9fa;
+        }
+        
+        .report-table tr:hover {
+            background: #e9ecef;
+        }
+        
+        .report-summary {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+        
+        .summary-card {
+            background: linear-gradient(135deg, #7a5c2e 0%, #8b6b3a 100%);
+            color: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            text-align: center;
+        }
+        
+        .summary-card h4 {
+            margin: 0 0 0.5rem 0;
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+        
+        .summary-card .value {
+            font-size: 2rem;
+            font-weight: bold;
+            margin: 0;
+        }
+        
+        .chart-container {
+            background: white;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-top: 2rem;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        .chart-container h3 {
+            color: #7a5c2e;
+            margin-bottom: 1rem;
+        }
+        
+        /* Image Upload Styles */
+        .image-upload-container {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        
+        .image-input-group {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .image-input-group .btn {
+            flex-shrink: 0;
+        }
+        
+        .file-info {
+            color: #666;
+            font-size: 0.9rem;
+            font-style: italic;
+        }
+        
+        .image-url-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+        
+        .url-info {
+            color: #666;
+            font-size: 0.8rem;
+            font-style: italic;
+        }
+        
+        .image-preview {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 1rem;
+            border: 2px dashed #e6b8a2;
+            border-radius: 8px;
+            background: #f8f3ed;
+        }
+        
+        .image-preview img {
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        
+        .btn-small {
+            padding: 0.4rem 0.8rem;
+            font-size: 0.8rem;
+            background: #ff6b6b;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background 0.2s ease;
+        }
+        
+        .btn-small:hover {
+            background: #ff5252;
+        }
+        
+        .profile-section h3 {
+            color: #7a5c2e;
+            margin-bottom: 1.5rem;
+            border-bottom: 2px solid #f8f3ed;
+            padding-bottom: 0.5rem;
+        }
+        
+        /* Profile Navigation Tabs */
+        .profile-nav {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            border-bottom: 2px solid #f8f3ed;
+            padding-bottom: 1rem;
+        }
+        
+        .profile-nav-btn {
+            background: none;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            color: #7a5c2e;
+            font-family: Georgia, serif;
+            font-weight: 500;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .profile-nav-btn:hover {
+            background: #f8f3ed;
+        }
+        
+        .profile-nav-btn.active {
+            background: #7a5c2e;
+            color: white;
+        }
+        
+        .profile-tab {
+            display: block;
+        }
+        
+        .profile-tab.hidden {
+            display: none;
+        }
+        
+        /* ===== CRITICAL iOS/SAFARI SCROLLING FIXES ===== */
+        @supports (-webkit-touch-callout: none) {
+            body {
+                position: relative !important;
+                width: 100%;
+                -webkit-overflow-scrolling: touch;
+            }
+        }
+        
+        /* Fix for iOS scrolling issues */
+        html, body {
+            overflow-x: hidden;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+            height: 100%;
+            position: relative;
+        }
+        
+        /* Main containers scrolling fix */
+        #customerContent,
+        #adminContent,
+        .admin-dashboard,
+        main {
+            -webkit-overflow-scrolling: touch;
+            overflow-y: auto;
+            overflow-x: hidden;
+        }
+        
+        /* ===== MOBILE RESPONSIVE IMPROVEMENTS ===== */
+        @media (max-width: 768px) {
+            /* Header adjustments */
+            header {
+                padding: 0.5rem 0.8rem;
+            }
+            
+            nav {
+                flex-wrap: wrap;
+                gap: 0.5rem;
+            }
+            
+            /* Logo responsive */
+            .logo-text-vertical .logo-script-elegant {
+                font-size: 2.2rem !important;
+            }
+            
+            .logo-text-vertical .logo-caps-classic {
+                font-size: 0.9rem !important;
+                letter-spacing: 0.08em !important;
+            }
+            
+            /* Navigation icons spacing */
+            .nav-icons {
+                gap: 0.8rem;
+            }
+            
+            .nav-icons i {
+                font-size: 1rem;
+                padding: 6px;
+            }
+            
+            /* User dropdown fix for mobile */
+            .user-dropdown {
+                right: -10px;
+                min-width: 140px;
+                box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+                z-index: 1100;
+            }
+            
+            .user-dropdown a {
+                font-size: 0.9rem;
+                padding: 0.6rem 1rem;
+            }
+            
+    .nav-links {
+        display: flex !important;
+        overflow-x: auto;
+        overflow-y: hidden;
+        -webkit-overflow-scrolling: touch;
+        scroll-behavior: smooth;
+        padding: 0.8rem 1rem;
+        margin: 0.8rem 0; /* Changed from margin: 0.8rem -0.8rem; */
+        gap: 0.6rem;
+        /* Show scrollbar */
+        scrollbar-width: thin;
+        scrollbar-color: #e6b8a2 transparent;
+        background: linear-gradient(90deg, 
+            white 0%, 
+            transparent 2%, 
+            transparent 98%, 
+            white 100%);
+        position: relative;
+        /* Add scroll snap for better UX */
+        scroll-snap-type: x mandatory;
+        /* Add padding to ensure first and last items are visible */
+        scroll-padding: 0 1rem;
+    }
+    
+    /* Add padding to the container to ensure full visibility */
+    .nav-links::before {
+        content: '';
+        display: block;
+        flex: 0 0 0.5rem;
+    }
+    
+    .nav-links::after {
+        content: '';
+        display: block;
+        flex: 0 0 0.5rem;
+    }
+    
+    /* Show scrollbar on webkit */
+    .nav-links::-webkit-scrollbar {
+        height: 6px;
+        display: block !important;
+    }
+    
+    .nav-links::-webkit-scrollbar-track {
+        background: rgba(230, 184, 162, 0.2);
+        border-radius: 3px;
+    }
+    
+    .nav-links::-webkit-scrollbar-thumb {
+        background: #e6b8a2;
+        border-radius: 3px;
+    }
+    
+    /* Category links styling */
+    .nav-links a {
+        flex: 0 0 auto;
+        padding: 0.6rem 1rem;
+        background: #f8f3ed;
+        border: 1px solid #e6b8a2;
+        border-radius: 20px;
+        font-size: 0.82rem;
+        white-space: nowrap;
+        display: inline-block;
+        text-align: center;
+        transition: all 0.2s ease;
+        min-width: fit-content;
+        scroll-snap-align: start;
+    }
+    
+    .nav-links a:active {
+        transform: scale(0.95);
+        background: #e6b8a2;
+        color: white;
+    }
+
+
+            
+            
+            /* Show scrollbar on webkit */
+            .nav-links::-webkit-scrollbar {
+                height: 6px;
+                display: block !important;
+            }
+            
+            .nav-links::-webkit-scrollbar-track {
+                background: rgba(230, 184, 162, 0.2);
+                border-radius: 3px;
+            }
+            
+            .nav-links::-webkit-scrollbar-thumb {
+                background: #e6b8a2;
+                border-radius: 3px;
+            }
+            
+            /* Category links styling */
+            .nav-links a {
+                flex: 0 0 auto;
+                padding: 0.6rem 1rem;
+                background: #f8f3ed;
+                border: 1px solid #e6b8a2;
+                border-radius: 20px;
+                font-size: 0.82rem;
+                white-space: nowrap;
+                display: inline-block;
+                text-align: center;
+                transition: all 0.2s ease;
+                min-width: fit-content;
+            }
+            
+            .nav-links a:active {
+                transform: scale(0.95);
+                background: #e6b8a2;
+                color: white;
+            }
+            
+            /* Home slider mobile */
+            #home-slider {
+                margin: 1rem 0.8rem;
+                border-radius: 12px;
+                width: calc(100% - 1.6rem);
+            }
+            
+            #slider-img {
+                height: 200px;
+            }
+            
+            /* Product grid mobile - FULL WIDTH FIX */
+            .products-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 0.6rem;
+                padding: 0.8rem;
+                margin: 0;
+                width: 100%;
+            }
+            
+            /* Product card mobile adjustments */
+            .product-card {
+                border-radius: 10px;
+                width: 100%;
+            }
+            
+            .product-image-container {
+                height: 160px;
+            }
+            
+            .product-info {
+                padding: 0.6rem;
+            }
+            
+            .product-card h3,
+            .product-title {
+                font-size: 0.9rem;
+            }
+            
+            .product-card p {
+                font-size: 0.75rem;
+                -webkit-line-clamp: 1;
+            }
+            
+            .product-price {
+                font-size: 1rem;
+            }
+            
+            .product-actions .btn {
+                padding: 0.5rem 0.6rem;
+                font-size: 0.7rem;
+            }
+            
+            /* Stock indicator mobile */
+            .stock-indicator {
+                font-size: 0.6rem;
+                padding: 0.2rem 0.4rem;
+                top: 6px;
+                right: 6px;
+            }
+            
+            /* Variant count mobile */
+            .variant-count {
+                font-size: 0.65rem;
+                padding: 0.2rem 0.5rem;
+            }
+            
+            /* Modal mobile adjustments */
+            .modal-content {
+                margin: 0.8rem;
+                padding: 1.2rem;
+                max-width: calc(100% - 1.6rem);
+                max-height: calc(100% - 1.6rem);
+            }
+            
+            #productModalContent {
+                grid-template-columns: 1fr !important;
+                gap: 1rem !important;
+            }
+            
+            /* Profile section mobile */
+            .profile-section {
+                margin: 0.8rem;
+                padding: 1.2rem;
+                width: calc(100% - 1.6rem);
+            }
+            
+            .profile-nav {
+                flex-wrap: nowrap;
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+                scrollbar-width: none;
+            }
+            
+            .profile-nav::-webkit-scrollbar {
+                display: none;
+            }
+            
+            .profile-nav-btn {
+                flex-shrink: 0;
+                font-size: 0.8rem;
+                padding: 0.5rem 0.8rem;
+            }
+            
+            /* Admin panel mobile */
+            .admin-dashboard {
+                padding: 0 0.8rem;
+                width: 100%;
+            }
+            
+            .dashboard-stats {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 0.8rem;
+            }
+            
+            .stat-card {
+                padding: 1.2rem;
+            }
+            
+            .stat-card i {
+                font-size: 1.8rem;
+            }
+            
+            .stat-card p {
+                font-size: 1.3rem;
+            }
+            
+            /* ADMIN NAVIGATION SCROLL FIX */
+            .admin-nav {
+                display: flex;
+                overflow-x: auto;
+                overflow-y: hidden;
+                -webkit-overflow-scrolling: touch;
+                flex-wrap: nowrap;
+                scrollbar-width: thin;
+                margin: 0 -1rem;
+                padding: 0 1rem 0.5rem;
+                gap: 0.8rem;
+            }
+            
+            .admin-nav::-webkit-scrollbar {
+                height: 4px;
+            }
+            
+            .admin-nav::-webkit-scrollbar-thumb {
+                background: #e6b8a2;
+                border-radius: 2px;
+            }
+            
+            .admin-nav button {
+                flex: 0 0 auto;
+                font-size: 0.8rem;
+                padding: 0.5rem 0.8rem;
+                white-space: nowrap;
+                min-height: 40px;
+            }
+            
+            /* TABLES MOBILE FIX - SCROLLABLE */
+            .data-table {
+                font-size: 0.8rem;
+                display: block;
+                width: 100%;
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+                scrollbar-width: thin;
+            }
+            
+            .data-table::-webkit-scrollbar {
+                height: 6px;
+            }
+            
+            .data-table::-webkit-scrollbar-thumb {
+                background: #e6b8a2;
+                border-radius: 3px;
+            }
+            
+            .data-table th,
+            .data-table td {
+                padding: 0.6rem;
+                white-space: nowrap;
+                min-width: 100px;
+            }
+            
+            /* Report tables specific fix */
+            .report-table {
+                width: 100%;
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+                display: block;
+                margin-bottom: 1rem;
+            }
+            
+            .report-table table {
+                min-width: 600px;
+                width: 100%;
+                font-size: 0.75rem;
+            }
+            
+            .report-table th,
+            .report-table td {
+                padding: 0.5rem;
+                text-align: left;
+                white-space: nowrap;
+            }
+            
+            /* Add scroll indicator for tables */
+            .report-table::after,
+            .data-table::after {
+                content: '← Scroll →';
+                display: block;
+                text-align: center;
+                color: #999;
+                font-size: 0.7rem;
+                padding: 0.5rem;
+                font-style: italic;
+            }
+            
+            /* Checkout mobile */
+            .checkout-wrapper {
+                grid-template-columns: 1fr;
+                padding: 0.8rem;
+                gap: 1rem;
+            }
+            
+            .checkout-form-section,
+            .checkout-summary-section {
+                padding: 1.2rem;
+                width: 100%;
+            }
+            
+            .checkout-summary-section {
+                position: relative !important;
+                top: auto !important;
+            }
+            
+            .exit-btn {
+                top: 10px;
+                left: 10px;
+                padding: 0.5rem 1rem;
+                font-size: 0.8rem;
+            }
+            
+            /* Forms mobile */
+            .form-group input,
+            .form-group select,
+            .form-group textarea {
+                font-size: 16px; /* Prevents zoom on iOS */
+                padding: 0.6rem;
+            }
+            
+            .form-row {
+                grid-template-columns: 1fr !important;
+            }
+            
+            /* Buttons mobile */
+            .btn {
+                padding: 0.5rem 1rem;
+                font-size: 0.8rem;
+            }
+            
+            /* Toast mobile */
+            .toast {
+                right: 10px;
+                left: 10px;
+                padding: 0.8rem 1.2rem;
+                font-size: 0.8rem;
+                text-align: center;
+            }
+            
+            /* Order cards mobile */
+            .orders-grid {
+                grid-template-columns: 1fr;
+                gap: 0.8rem;
+            }
+            
+            .order-card {
+                padding: 1rem;
+            }
+            
+            /* Title wrapper fix */
+            .title-wrapper {
+                min-height: 50px;
+            }
+            
+            /* SALES CHART FIX */
+            #salesChart {
+                max-height: 200px !important;
+                width: 100% !important;
+            }
+            
+            #categoryChart {
+                max-height: 200px !important;
+                width: 100% !important;
+            }
+            
+            .chart-container {
+                padding: 0.8rem;
+                margin: 0.8rem 0;
+                width: 100%;
+            }
+            
+            .chart-container h3 {
+                font-size: 0.9rem;
+                margin-bottom: 0.6rem;
+            }
+            
+            /* Report cards full width */
+            .report-card {
+                margin-bottom: 1rem;
+                padding: 1rem;
+                width: 100%;
+            }
+            
+            /* Summary cards grid */
+            .report-summary {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 0.6rem;
+                margin: 0.8rem 0;
+            }
+            
+            .summary-card {
+                padding: 1rem;
+            }
+            
+            .summary-card h4 {
+                font-size: 0.75rem;
+            }
+            
+            .summary-card .value {
+                font-size: 1.1rem;
+            }
+            
+            /* Admin sections full width */
+            .admin-section {
+                padding: 0.8rem;
+                overflow-x: hidden;
+                width: 100%;
+            }
+            
+            #admin-reports {
+                padding: 0.8rem;
+                overflow-x: hidden;
+                width: 100%;
+            }
+            
+            /* Report filters mobile */
+            .report-filters {
+                padding: 1rem;
+                margin-bottom: 1rem;
+            }
+            
+            .filter-row {
+                grid-template-columns: 1fr !important;
+            }
+            
+            /* Report actions mobile */
+            .report-actions {
+                flex-wrap: wrap;
+                gap: 0.5rem;
+            }
+            
+            .report-actions .btn {
+                flex: 1 1 calc(50% - 0.25rem);
+                min-width: 110px;
+                font-size: 0.75rem;
+                padding: 0.5rem;
+            }
+            
+            /* Info grid mobile */
+            .info-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        /* Small mobile devices */
+        @media (max-width: 480px) {
+            /* Even smaller adjustments */
+            .products-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 0.5rem;
+                padding: 0.5rem;
+            }
+            
+            .product-card {
+                border-radius: 8px;
+            }
+            
+            .product-image-container {
+                height: 140px;
+            }
+            
+            .product-info {
+                padding: 0.5rem;
+            }
+            
+            .product-card h3,
+            .product-title {
+                font-size: 0.8rem;
+            }
+            
+            .product-price {
+                font-size: 0.9rem;
+            }
+            
+            .product-actions {
+                flex-direction: column;
+                gap: 0.3rem;
+            }
+            
+            .product-actions .btn {
+                width: 100%;
+                padding: 0.4rem;
+                font-size: 0.65rem;
+            }
+            
+            /* Dashboard stats 1 column on very small screens */
+            .dashboard-stats {
+                grid-template-columns: 1fr;
+            }
+            
+            /* Modal close button mobile */
+            .close-modal {
+                font-size: 1.5rem;
+                top: 10px;
+                right: 15px;
+            }
+        }
+        
+        /* Desktop improvements */
+        @media (min-width: 1200px) {
+            /* Larger screens optimization */
+            .products-grid {
+                grid-template-columns: repeat(4, 1fr);
+                gap: 2rem;
+                padding: 2rem 3rem;
+            }
+            
+            .admin-dashboard {
+                max-width: 1400px;
+            }
+            
+            .product-card:hover {
+                transform: translateY(-10px);
+            }
+        }
+        
+        /* Smooth scrolling for all devices */
+        html {
+            scroll-behavior: smooth;
+            -webkit-overflow-scrolling: touch;
+        }
+        
+        /* Better touch targets for mobile */
+        @media (hover: none) and (pointer: coarse) {
+            .btn,
+            .nav-links a,
+            .admin-nav button,
+            .product-card,
+            .user-dropdown a {
+                min-height: 44px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+            
+            .nav-icons i {
+                padding: 8px;
+                margin: -8px;
+            }
+        }
+        
+        /* Loading spinner mobile centering */
+        @media (max-width: 768px) {
+            .loading-spinner {
+                position: fixed;
+                top: 40%;
+            }
+        }
+        
+        /* Fix product title centering on all devices */
+        .product-info {
+            display: flex;
+            flex-direction: column;
+            align-items: stretch;
+        }
+        
+        .title-wrapper {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            width: 100%;
+        }
+        
+        .product-title {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.3rem;
+            text-align: center;
+            width: 100%;
+        }
+        
+        /* Prevent horizontal scroll */
+        body {
+            overflow-x: hidden;
+            width: 100%;
+        }
+        
+        /* Canvas responsive fix for charts */
+        canvas {
+            max-width: 100% !important;
+            height: auto !important;
+        }
+        
+        /* Z-INDEX HIERARCHY FIX */
+        .loading-spinner { z-index: 10000; }
+        .toast { z-index: 9999; }
+        .modal { z-index: 1000; }
+        .user-dropdown { z-index: 999; }
+        header { z-index: 100; }
+        
+        /* OVERFLOW FIXES FOR CONTAINERS */
+        .products-grid,
+        .orders-grid,
+        .reports-grid {
+   overflow: visible !important;
+}
+
+/* SPECIFIC ANDROID/SAMSUNG FIXES */
+@media screen and (max-width: 768px) {
+   /* Fix for Samsung devices with smaller screens */
+   header {
+       position: relative;
+       z-index: 100;
+       width: 100%;
+   }
+   
+   /* Ensure categories are fully visible with padding */
+   .nav-links {
+       max-width: 100vw;
+       width: 100%;
+       box-sizing: border-box;
+       padding-left: 0.8rem;
+       padding-right: 0.8rem;
+   }
+   
+   /* Fix viewport issues on Samsung */
+   .modal-content {
+       max-height: 85vh !important;
+       overflow-y: auto !important;
+       -webkit-overflow-scrolling: touch;
+   }
+}
+
+/* GENERAL MOBILE IMPROVEMENTS */
+@media (max-width: 768px) {
+   /* Prevent horizontal overflow */
+   * {
+       max-width: 100vw !important;
+   }
+   
+   /* Main content full width */
+   #customerContent,
+   #adminContent {
+       width: 100%;
+       padding: 0;
+       margin: 0;
+   }
+   
+   /* Admin panel full width */
+   .admin-panel {
+       margin: 0.8rem;
+       padding: 1.2rem;
+       width: calc(100% - 1.6rem);
+   }
+   
+   /* Ensure all sections take full width */
+   .admin-section,
+   .profile-section,
+   .orders-section,
+   .reports-section {
+       width: 100%;
+       box-sizing: border-box;
+   }
+}
+
+/* TOUCH EVENT IMPROVEMENTS */
+@media (hover: none) {
+   /* Better touch feedback */
+   .btn:active,
+   .nav-links a:active,
+   .product-card:active {
+       opacity: 0.8;
+       transform: scale(0.98);
+   }
+   
+   /* Larger touch targets */
+   .close-modal {
+       padding: 10px;
+       font-size: 1.8rem;
+   }
+}
+
+/* SPECIFIC IPHONE X+ FIXES */
+@supports (padding: max(0px)) {
+   /* Account for notch and home indicator */
+   body {
+       padding-bottom: env(safe-area-inset-bottom);
+   }
+   
+   .checkout-overlay {
+       padding-bottom: env(safe-area-inset-bottom);
+   }
+   
+   header {
+       padding-top: env(safe-area-inset-top);
+   }
+}
+
+/* ADDITIONAL FIXES FOR REPORTS AND CHARTS */
+@media (max-width: 768px) {
+   /* Report page specific fixes */
+   #admin-reports {
+       width: 100%;
+       padding: 0.5rem;
+       overflow-x: hidden;
+   }
+   
+   /* Charts container fix */
+   .chart-container {
+       position: relative;
+       width: 100%;
+       height: auto;
+       padding: 1rem 0.5rem;
+       margin: 0.5rem 0;
+       overflow: hidden;
+   }
+   
+   /* Canvas elements responsive */
+   #salesChart,
+   #categoryChart {
+       width: 100% !important;
+       max-width: 100% !important;
+       height: 250px !important;
+       max-height: 250px !important;
+   }
+   
+   /* Fix chart rendering on mobile */
+   .chart-container canvas {
+       display: block !important;
+       box-sizing: border-box !important;
+       height: 250px !important;
+       width: 100% !important;
+   }
+}
+
+/* SALES TREND SPECIFIC FIX */
+@media (max-width: 768px) {
+   /* Ensure sales trend chart is visible and properly sized */
+   #salesChart {
+       background: white;
+       border: 1px solid #e6b8a2;
+       border-radius: 8px;
+   }
+   
+   /* Adjust chart title */
+   .chart-container h3 {
+       font-size: 0.9rem;
+       margin-bottom: 0.5rem;
+       text-align: center;
+   }
+}
+
+/* Fix for category visibility on Android */
+@media (max-width: 768px) and (max-height: 900px) {
+   .nav-links {
+       padding: 0.6rem 0.8rem;
+       margin: 0.5rem -0.8rem;
+   }
+   
+   .nav-links a {
+       padding: 0.5rem 0.8rem;
+       font-size: 0.8rem;
+       min-width: auto;
+   }
+}
+
+/* Ensure footer doesn't overlap content */
+footer {
+   margin-top: 2rem;
+   width: 100%;
+}
+
+/* Final responsive adjustments */
+@media (max-width: 768px) {
+   /* Ensure all content respects viewport */
+   body > * {
+       max-width: 100vw;
+       overflow-x: hidden;
+   }
+   
+   /* Fix any remaining horizontal scroll issues */
+   .modal,
+   .checkout-overlay,
+   #customerContent,
+   #adminContent {
+       max-width: 100vw;
+       overflow-x: hidden;
+   }
+}
+
+/* Badge styles for reports */
+.badge {
+   padding: 0.25rem 0.5rem;
+   border-radius: 4px;
+   font-size: 0.75rem;
+   font-weight: 600;
+}
+
+.badge.success {
+   background: #d4edda;
+   color: #155724;
+}
+
+.badge.danger {
+   background: #f8d7da;
+   color: #721c24;
+}
+
+/* Print styles for reports */
+@media print {
+   .report-filters,
+   .report-actions,
+   .admin-nav,
+   header,
+   footer {
+       display: none !important;
+   }
+   
+   .report-card,
+   .chart-container {
+       page-break-inside: avoid;
+   }
+}
+
+/* Ensure proper spacing on all devices */
+@media (max-width: 768px) {
+   /* Global padding/margin adjustments */
+   section,
+   .section,
+   .container {
+       padding-left: 0.5rem;
+       padding-right: 0.5rem;
+   }
+   
+   /* Ensure modals don't exceed viewport */
+   .modal-content {
+       max-width: calc(100vw - 1rem) !important;
+       margin: 0.5rem !important;
+   }
+}
+
+/* Final override for full width on mobile */
+@media (max-width: 768px) {
+   /* Remove any default margins that might cause issues */
+   body {
+       margin: 0;
+       padding: 0;
+       width: 100vw;
+       overflow-x: hidden;
+   }
+   
+   /* Ensure main containers take full width */
+   main,
+   #customerContent,
+   #adminContent,
+   .admin-dashboard {
+       width: 100%;
+       max-width: 100vw;
+       margin: 0;
+       box-sizing: border-box;
+   }
+   
+   /* Product grid takes available space */
+   .products-grid {
+       width: 100%;
+       box-sizing: border-box;
+       margin: 0;
+       padding: 0.5rem;
+   }
+   
+   /* Admin sections full width */
+   .admin-section {
+       width: 100%;
+       box-sizing: border-box;
+       margin: 0;
+       padding: 0.5rem;
+   }
+}
+
+/* Chart container fixes */
+.chart-container {
+    background: white;
+    border-radius: 8px;
+    padding: 1.5rem;
+    margin-top: 2rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    position: relative;
+    overflow: hidden;
+}
+
+.chart-container h3 {
+    color: #7a5c2e;
+    margin-bottom: 1rem;
+}
+
+/* Chart wrapper for responsive behavior */
+.chart-wrapper {
+    position: relative;
+    height: 400px;
+    width: 100%;
+}
+
+/* Canvas responsive fix */
+canvas {
+    display: block !important;
+    box-sizing: border-box;
+    height: 100% !important;
+    width: 100% !important;
+}
+
+/* Mobile responsive adjustments */
+@media (max-width: 1200px) {
+    .chart-wrapper {
+        height: 350px;
+    }
+}
+
+@media (max-width: 992px) {
+    .chart-wrapper {
+        height: 300px;
+    }
+}
+
+@media (max-width: 768px) {
+    .chart-wrapper {
+        height: 250px;
+    }
+    
+    .chart-container {
+        padding: 1rem;
+        margin: 1rem 0;
+    }
+    
+    .chart-container h3 {
+        font-size: 0.9rem;
+        text-align: center;
+    }
+}
+
+@media (max-width: 480px) {
+    .chart-wrapper {
+        height: 200px;
+    }
+}
+
+/* Reports section mobile fixes */
+@media (max-width: 768px) {
+    #admin-reports {
+        padding: 0.5rem;
+        width: 100%;
+    }
+    
+    .report-filters {
+        padding: 1rem;
+        margin-bottom: 1rem;
+    }
+    
+    .filter-row {
+        grid-template-columns: 1fr !important;
+        gap: 0.5rem;
+    }
+    
+    .report-summary {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 0.5rem;
+    }
+    
+    .summary-card {
+        padding: 1rem;
+    }
+    
+    .summary-card h4 {
+        font-size: 0.75rem;
+    }
+    
+    .summary-card .value {
+        font-size: 1.1rem;
+    }
+    
+    /* Chart containers mobile */
+    .chart-container {
+        margin: 0.5rem 0;
+        padding: 1rem 0.5rem;
+    }
+    
+    /* Ensure charts don't overflow */
+    .chart-wrapper {
+        max-width: 100%;
+        overflow: hidden;
+    }
+}
+
+
+header {
+        overflow-x: hidden;
+    }
+    
+    nav {
+        max-width: 100%;
+        overflow: visible;
+    }
+
+
+    /* FIXED NAVIGATION BAR STYLES FOR ANDROID/SAMSUNG */
+/* Replace the existing mobile navigation styles with these */
+
+@media (max-width: 768px) {
+    /* Reset header to ensure no overflow issues */
+    header {
+        overflow: visible !important;
+        width: 100%;
+        position: relative;
+    }
+    
+    nav {
+        overflow: visible !important;
+        width: 100%;
+        max-width: 100%;
+    }
+    
+    /* Fixed navigation links container */
+    .nav-links {
+        display: flex !important;
+        overflow-x: auto !important;
+        overflow-y: hidden !important;
+        -webkit-overflow-scrolling: touch !important;
+        scroll-behavior: smooth;
+        
+        /* Critical: Use standard padding without negative margins */
+        padding: 0.8rem 1rem !important;
+        margin: 0.8rem 0 !important;
+        gap: 0.6rem;
+        
+        /* Ensure full width */
+        width: 100%;
+        max-width: 100%;
+        box-sizing: border-box;
+        
+        /* Show scrollbar for better UX */
+        scrollbar-width: thin;
+        scrollbar-color: #e6b8a2 transparent;
+        
+        /* Add scroll snap for better control */
+        scroll-snap-type: x mandatory;
+        scroll-padding: 0 1rem;
+        
+        /* Ensure the container can scroll */
+        white-space: nowrap;
+        flex-wrap: nowrap !important;
+    }
+    
+    /* Ensure scrollbar is visible on all devices */
+    .nav-links::-webkit-scrollbar {
+        height: 6px !important;
+        display: block !important;
+        -webkit-appearance: none;
+    }
+    
+    .nav-links::-webkit-scrollbar-track {
+        background: rgba(230, 184, 162, 0.2);
+        border-radius: 3px;
+    }
+    
+    .nav-links::-webkit-scrollbar-thumb {
+        background: #e6b8a2;
+        border-radius: 3px;
+        -webkit-appearance: none;
+    }
+    
+    /* Navigation links styling */
+    .nav-links a {
+        flex: 0 0 auto !important;
+        display: inline-block !important;
+        padding: 0.6rem 1rem;
+        background: #f8f3ed;
+        border: 1px solid #e6b8a2;
+        border-radius: 20px;
+        font-size: 0.82rem;
+        white-space: nowrap;
+        text-align: center;
+        transition: all 0.2s ease;
+        text-decoration: none;
+        color: #7a5c2e;
+        scroll-snap-align: start;
+        /* Ensure links don't shrink */
+        min-width: fit-content;
+        flex-shrink: 0 !important;
+    }
+    
+    .nav-links a:active,
+    .nav-links a:hover {
+        background: #e6b8a2;
+        color: white;
+        transform: scale(0.95);
+    }
+    
+    /* Add padding to first and last items */
+    .nav-links a:first-child {
+        margin-left: 0;
+    }
+    
+    .nav-links a:last-child {
+        margin-right: 1rem;
+    }
+}
+
+/* Android-specific fixes using feature detection */
+@media screen and (max-width: 768px) and (-webkit-min-device-pixel-ratio: 0) {
+    /* Target WebKit browsers on Android */
+    .nav-links {
+        /* Force hardware acceleration */
+        -webkit-transform: translateZ(0);
+        transform: translateZ(0);
+        
+        /* Ensure touch scrolling works */
+        -webkit-overflow-scrolling: touch !important;
+        
+        /* Add momentum scrolling */
+        -webkit-scroll-snap-type: x mandatory;
+        scroll-snap-type: x mandatory;
+    }
+}
+
+/* Samsung Internet Browser specific fix */
+@supports (-webkit-overflow-scrolling: touch) {
+    @media (max-width: 768px) {
+        .nav-links {
+            /* Use 3D transform to enable GPU acceleration */
+            transform: translate3d(0, 0, 0);
+            -webkit-transform: translate3d(0, 0, 0);
+            
+            /* Ensure the container creates a new stacking context */
+            position: relative;
+            z-index: 1;
+        }
+    }
+}
+
+/* Alternative approach for problematic Android devices */
+@media (max-width: 768px) and (pointer: coarse) {
+    .nav-links {
+        /* Create a scrollable container with fixed dimensions */
+        display: flex !important;
+        flex-direction: row !important;
+        flex-wrap: nowrap !important;
+        overflow-x: scroll !important;
+        overflow-y: hidden !important;
+        -webkit-overflow-scrolling: touch !important;
+        
+        /* Set explicit height to prevent layout issues */
+        height: auto;
+        min-height: 44px;
+        
+        /* Ensure the scrollbar is always visible */
+        scrollbar-width: thin;
+        
+        /* Remove any transforms that might interfere */
+        transform: none !important;
+        -webkit-transform: none !important;
+    }
+    
+    /* Make sure links are properly sized for touch */
+    .nav-links a {
+        min-height: 44px;
+        display: flex !important;
+        align-items: center;
+        justify-content: center;
+        padding: 0.6rem 1rem;
+        margin: 0 0.3rem;
+    }
+}
+
+/* Final fallback for stubborn Android browsers */
+@media (max-width: 768px) {
+    /* Wrapper div approach - add this div in HTML around nav-links */
+    .nav-links-wrapper {
+        width: 100%;
+        overflow-x: auto;
+        overflow-y: hidden;
+        -webkit-overflow-scrolling: touch;
+        scroll-behavior: smooth;
+        padding: 0;
+        margin: 0;
+    }
+    
+    .nav-links-wrapper .nav-links {
+        display: inline-flex !important;
+        width: max-content !important;
+        padding: 0.8rem 1rem !important;
+        margin: 0 !important;
+    }
+}
+
+
+
+.burger-menu {
+    display: none;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 30px;
+    height: 25px;
+    cursor: pointer;
+    position: relative;
+    z-index: 1001;
+}
+
+.burger-menu span {
+    display: block;
+    width: 100%;
+    height: 3px;
+    background: #7a5c2e;
+    border-radius: 2px;
+    transition: all 0.3s ease;
+    transform-origin: center;
+}
+
+.burger-menu.active span:nth-child(1) {
+    transform: translateY(11px) rotate(45deg);
+}
+
+.burger-menu.active span:nth-child(2) {
+    opacity: 0;
+    transform: scaleX(0);
+}
+
+.burger-menu.active span:nth-child(3) {
+    transform: translateY(-11px) rotate(-45deg);
+}
+
+/* Mobile Menu Overlay */
+.mobile-menu-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 998;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.mobile-menu-overlay.active {
+    opacity: 1;
+}
+
+/* Navigation Links Container for Mobile */
+@media (max-width: 768px) {
+    /* Hide desktop navigation */
+    .nav-links {
+        position: fixed !important;
+        top: 0;
+        right: -100%;
+        width: 280px;
+        height: 100vh;
+        background: white;
+        flex-direction: column !important;
+        padding: 80px 0 20px 0 !important;
+        margin: 0 !important;
+        gap: 0 !important;
+        overflow-y: auto !important;
+        box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
+        transition: right 0.3s ease;
+        z-index: 999;
+    }
+    
+    /* When menu is active */
+    .nav-links.active {
+        right: 0;
+    }
+    
+    /* Style navigation links for mobile menu */
+    .nav-links a {
+        display: block !important;
+        width: 100% !important;
+        padding: 1rem 2rem !important;
+        margin: 0 !important;
+        background: white !important;
+        border: none !important;
+        border-bottom: 1px solid #f8f3ed !important;
+        border-radius: 0 !important;
+        text-align: left !important;
+        font-size: 1rem !important;
+        color: #7a5c2e !important;
+        transition: all 0.2s ease !important;
+    }
+    
+    .nav-links a:hover,
+    .nav-links a:active {
+        background: #f8f3ed !important;
+        transform: none !important;
+        padding-left: 2.5rem !important;
+    }
+    
+    /* Show burger menu on mobile */
+    .burger-menu {
+        display: flex;
+    }
+    
+    /* Adjust header layout for burger menu */
+    nav {
+        position: relative;
+    }
+    
+    /* Ensure logo and icons don't overlap */
+    .logo {
+        flex: 1;
+    }
+    
+    .nav-icons {
+        margin-right: 1rem;
+    }
+    
+    /* Add close button inside mobile menu */
+    .nav-links::before {
+        content: 'MENU';
+        position: absolute;
+        top: 20px;
+        left: 2rem;
+        font-size: 1.5rem;
+        font-weight: bold;
+        color: #7a5c2e;
+        font-family: 'Montserrat', sans-serif;
+        letter-spacing: 2px;
+    }
+}
+
+/* Prevent body scroll when menu is open */
+body.menu-open {
+    overflow: hidden;
+}
+
+/* Smooth transitions */
+@media (max-width: 768px) {
+    .nav-links {
+        -webkit-transform: translateX(0);
+        transform: translateX(0);
+    }
+    
+    /* Add category icons to mobile menu */
+    .nav-links a::before {
+        content: '';
+        display: inline-block;
+        width: 20px;
+        height: 20px;
+        margin-right: 10px;
+        vertical-align: middle;
+        font-family: 'Font Awesome 5 Free';
+        font-weight: 900;
+        color: #e6b8a2;
+    }
+    
+    .nav-links a[onclick*="showHome"]::before { content: '\f015'; }
+    .nav-links a[onclick*="makeup"]::before { content: '\f5c4'; }
+    .nav-links a[onclick*="nails"]::before { content: '\f303'; }
+    .nav-links a[onclick*="skincare"]::before { content: '\f06e'; }
+    .nav-links a[onclick*="bodycare"]::before { content: '\f2cc'; }
+    .nav-links a[onclick*="accessories"]::before { content: '\f290'; }
+    .nav-links a[onclick*="perfumes"]::before { content: '\f75b'; }
+    .nav-links a[onclick*="hair"]::before { content: '\f0c3'; }
+    .nav-links a[onclick*="baby"]::before { content: '\f77c'; }
+}
+
+/* Tablet adjustments */
+@media (min-width: 769px) and (max-width: 1024px) {
+    .nav-links {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+    
+    .nav-links a {
+        margin: 0.25rem;
+        font-size: 0.9rem;
+        padding: 0.5rem 1rem;
+    }
+}
+
+
+@media (max-width: 768px) {
+    /* Burger Menu Button */
+    .burger-menu {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        width: 30px;
+        height: 25px;
+        cursor: pointer;
+        position: relative;
+        z-index: 1001;
+        margin-left: 1rem;
+    }
+
+    .burger-menu span {
+        display: block;
+        width: 100%;
+        height: 3px;
+        background: #7a5c2e;
+        border-radius: 2px;
+        transition: all 0.3s ease;
+        transform-origin: center;
+    }
+
+    .burger-menu.active span:nth-child(1) {
+        transform: translateY(11px) rotate(45deg);
+    }
+
+    .burger-menu.active span:nth-child(2) {
+        opacity: 0;
+        transform: scaleX(0);
+    }
+
+    .burger-menu.active span:nth-child(3) {
+        transform: translateY(-11px) rotate(-45deg);
+    }
+
+    /* Mobile Menu Overlay */
+    .mobile-menu-overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: 998;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+
+    .mobile-menu-overlay.active {
+        display: block;
+        opacity: 1;
+    }
+
+    /* Navigation Links Container for Mobile - FIXED */
+    .nav-links {
+        position: fixed !important;
+        top: 0;
+        right: -100%;
+        width: 280px;
+        height: 100vh;
+        background: white;
+        display: flex !important; /* Keep flex but remove the horizontal scroll styles */
+        flex-direction: column !important;
+        padding: 80px 0 20px 0 !important;
+        margin: 0 !important;
+        gap: 0 !important;
+        overflow-y: auto !important;
+        overflow-x: hidden !important; /* Prevent horizontal scroll in menu */
+        box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
+        transition: right 0.3s ease;
+        z-index: 999;
+        
+        /* Remove horizontal scroll specific styles */
+        -webkit-overflow-scrolling: auto !important;
+        scroll-behavior: auto !important;
+        scroll-snap-type: none !important;
+    }
+    
+    /* When menu is active - slide in from right */
+    .nav-links.active {
+        right: 0 !important;
+    }
+    
+    /* Style navigation links for mobile menu */
+    .nav-links a {
+        display: block !important;
+        width: 100% !important;
+        padding: 1rem 2rem !important;
+        margin: 0 !important;
+        background: white !important;
+        border: none !important;
+        border-bottom: 1px solid #f8f3ed !important;
+        border-radius: 0 !important;
+        text-align: left !important;
+        font-size: 1rem !important;
+        color: #7a5c2e !important;
+        transition: all 0.2s ease !important;
+        white-space: nowrap !important;
+        flex-shrink: 0 !important;
+    }
+    
+    .nav-links a:hover,
+    .nav-links a:active {
+        background: #f8f3ed !important;
+        transform: none !important;
+        padding-left: 2.5rem !important;
+    }
+
+    /* Remove scroll indicators for mobile menu */
+    .nav-links.active::before,
+    .nav-links.active::after {
+        display: none !important;
+    }
+
+    /* Ensure menu header is visible */
+    .nav-links::before {
+        content: 'MENU';
+        position: absolute;
+        top: 20px;
+        left: 2rem;
+        font-size: 1.5rem;
+        font-weight: bold;
+        color: #7a5c2e;
+        font-family: 'Montserrat', sans-serif;
+        letter-spacing: 2px;
+    }
+
+    /* Icons for menu items */
+    .nav-links a::before {
+        content: '';
+        display: inline-block;
+        width: 20px;
+        height: 20px;
+        margin-right: 10px;
+        vertical-align: middle;
+        font-family: 'Font Awesome 5 Free';
+        font-weight: 900;
+        color: #e6b8a2;
+    }
+    
+    .nav-links a[onclick*="showHome"]::before { content: '\f015'; }
+    .nav-links a[onclick*="makeup"]::before { content: '\f5c4'; }
+    .nav-links a[onclick*="nails"]::before { content: '\f303'; }
+    .nav-links a[onclick*="skincare"]::before { content: '\f06e'; }
+    .nav-links a[onclick*="bodycare"]::before { content: '\f2cc'; }
+    .nav-links a[onclick*="accessories"]::before { content: '\f290'; }
+    .nav-links a[onclick*="perfumes"]::before { content: '\f75b'; }
+    .nav-links a[onclick*="hair"]::before { content: '\f0c3'; }
+    .nav-links a[onclick*="baby"]::before { content: '\f77c'; }
+
+    /* Body scroll lock when menu is open */
+    body.menu-open {
+        overflow: hidden;
+        position: fixed;
+        width: 100%;
+    }
+}
+
+/* Desktop styles - ensure nav is visible */
+@media (min-width: 769px) {
+    .burger-menu {
+        display: none !important;
+    }
+    
+    .mobile-menu-overlay {
+        display: none !important;
+    }
+    
+    .nav-links {
+        position: static !important;
+        display: flex !important;
+        flex-direction: row !important;
+        height: auto !important;
+        width: 100% !important;
+        right: auto !important;
+        background: transparent !important;
+        box-shadow: none !important;
+        padding: 0 !important;
+        overflow: visible !important;
+    }
+    
+    .nav-links::before {
+        display: none !important;
+    }
+    
+    .nav-links a {
+        border: none !important;
+        padding: 0.5rem 1rem !important;
+        background: transparent !important;
+    }
+    
+    .nav-links a::before {
+        display: none !important;
+    }
+}
+
+
+/* Add this CSS to ensure burger menu works properly */
+
+/* Burger Menu Button */
+.burger-menu {
+    display: none;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 30px;
+    height: 25px;
+    cursor: pointer;
+    position: relative;
+    z-index: 1001;
+    margin-left: 1rem;
+}
+
+.burger-menu span {
+    display: block;
+    width: 100%;
+    height: 3px;
+    background: #7a5c2e;
+    border-radius: 2px;
+    transition: all 0.3s ease;
+    transform-origin: center;
+}
+
+.burger-menu.active span:nth-child(1) {
+    transform: translateY(11px) rotate(45deg);
+}
+
+.burger-menu.active span:nth-child(2) {
+    opacity: 0;
+    transform: scaleX(0);
+}
+
+.burger-menu.active span:nth-child(3) {
+    transform: translateY(-11px) rotate(-45deg);
+}
+
+/* Mobile Menu Overlay */
+.mobile-menu-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 998;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.mobile-menu-overlay.active {
+    display: block;
+    opacity: 1;
+}
+
+/* Mobile Navigation */
+@media (max-width: 768px) {
+    /* Show burger menu on mobile */
+    .burger-menu {
+        display: flex;
+    }
+    
+    /* Hide/transform nav links for mobile */
+    .nav-links {
+        position: fixed !important;
+        top: 0;
+        right: -100%;
+        width: 280px;
+        height: 100vh;
+        background: white;
+        display: flex !important;
+        flex-direction: column !important;
+        padding: 80px 0 20px 0 !important;
+        margin: 0 !important;
+        gap: 0 !important;
+        overflow-y: auto !important;
+        overflow-x: hidden !important;
+        box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
+        transition: right 0.3s ease;
+        z-index: 999;
+    }
+    
+    /* When menu is active - slide in from right */
+    .nav-links.active {
+        right: 0 !important;
+    }
+    
+    /* Style navigation links for mobile menu */
+    .nav-links a {
+        display: block !important;
+        width: 100% !important;
+        padding: 1rem 2rem !important;
+        margin: 0 !important;
+        background: white !important;
+        border: none !important;
+        border-bottom: 1px solid #f8f3ed !important;
+        border-radius: 0 !important;
+        text-align: left !important;
+        font-size: 1rem !important;
+        color: #7a5c2e !important;
+        transition: all 0.2s ease !important;
+        white-space: nowrap !important;
+        flex-shrink: 0 !important;
+        text-decoration: none !important;
+    }
+    
+    .nav-links a:hover,
+    .nav-links a:active {
+        background: #f8f3ed !important;
+        transform: none !important;
+        padding-left: 2.5rem !important;
+    }
+
+    /* Add menu header */
+    .nav-links::before {
+        content: 'MENU';
+        position: absolute;
+        top: 20px;
+        left: 2rem;
+        font-size: 1.5rem;
+        font-weight: bold;
+        color: #7a5c2e;
+        font-family: 'Montserrat', sans-serif;
+        letter-spacing: 2px;
+    }
+
+    /* Icons for menu items */
+    .nav-links a::before {
+        content: '';
+        display: inline-block;
+        width: 20px;
+        height: 20px;
+        margin-right: 10px;
+        vertical-align: middle;
+        font-family: 'Font Awesome 5 Free';
+        font-weight: 900;
+        color: #e6b8a2;
+    }
+    
+    .nav-links a[onclick*="showHome"]::before,
+    .nav-links a[data-nav="home"]::before { content: '\f015'; }
+    .nav-links a[onclick*="makeup"],
+    .nav-links a[data-category="makeup"]::before { content: '\f5c4'; }
+    .nav-links a[onclick*="nails"],
+    .nav-links a[data-category="nails"]::before { content: '\f303'; }
+    .nav-links a[onclick*="skincare"],
+    .nav-links a[data-category="skincare"]::before { content: '\f06e'; }
+    .nav-links a[onclick*="bodycare"],
+    .nav-links a[data-category="bodycare"]::before { content: '\f2cc'; }
+    .nav-links a[onclick*="accessories"],
+    .nav-links a[data-category="accessories"]::before { content: '\f290'; }
+    .nav-links a[onclick*="perfumes"],
+    .nav-links a[data-category="perfumes"]::before { content: '\f75b'; }
+    .nav-links a[onclick*="hair"],
+    .nav-links a[data-category="hair"]::before { content: '\f0c3'; }
+    .nav-links a[onclick*="baby"],
+    .nav-links a[data-category="baby"]::before { content: '\f77c'; }
+
+    /* Body scroll lock when menu is open */
+    body.menu-open {
+        overflow: hidden;
+        position: fixed;
+        width: 100%;
+    }
+}
+
+/* Desktop styles - ensure nav is visible */
+@media (min-width: 769px) {
+    .burger-menu {
+        display: none !important;
+    }
+    
+    .mobile-menu-overlay {
+        display: none !important;
+    }
+    
+    .nav-links {
+        position: static !important;
+        display: flex !important;
+        flex-direction: row !important;
+        height: auto !important;
+        width: 100% !important;
+        right: auto !important;
+        background: transparent !important;
+        box-shadow: none !important;
+        padding: 0 !important;
+        overflow: visible !important;
+    }
+    
+    .nav-links::before {
+        display: none !important;
+    }
+    
+    .nav-links a {
+        border: none !important;
+        padding: 0.5rem 1rem !important;
+        background: transparent !important;
+    }
+    
+    .nav-links a::before {
+        display: none !important;
+    }
+}
+
+
+/* REPLACE mobile menu CSS with this simple solution */
+
+/* Burger Menu Button */
+.burger-menu {
+    display: none;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 30px;
+    height: 25px;
+    cursor: pointer;
+    z-index: 1002;
+}
+
+.burger-menu span {
+    display: block;
+    width: 100%;
+    height: 3px;
+    background: #7a5c2e;
+    border-radius: 2px;
+    transition: all 0.3s ease;
+}
+
+.burger-menu.active span:nth-child(1) {
+    transform: translateY(11px) rotate(45deg);
+}
+
+.burger-menu.active span:nth-child(2) {
+    opacity: 0;
+}
+
+.burger-menu.active span:nth-child(3) {
+    transform: translateY(-11px) rotate(-45deg);
+}
+
+/* Mobile Menu Overlay */
+.mobile-menu-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+}
+
+.mobile-menu-overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* Mobile Menu */
+.mobile-menu {
+    position: fixed;
+    top: 0;
+    right: -300px;
+    width: 280px;
+    height: 100vh;
+    background: white;
+    z-index: 1001;
+    transition: right 0.3s ease;
+    box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+}
+
+.mobile-menu.active {
+    right: 0;
+}
+
+/* Mobile Menu Header */
+.mobile-menu-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem 2rem;
+    border-bottom: 1px solid #f8f3ed;
+    background: #7a5c2e;
+    color: white;
+}
+
+.mobile-menu-header span {
+    font-size: 1.2rem;
+    font-weight: bold;
+    letter-spacing: 2px;
+    font-family: 'Montserrat', sans-serif;
+}
+
+.close-mobile-menu {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 2rem;
+    cursor: pointer;
+    padding: 0;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Mobile Menu Links */
+.mobile-menu-links {
+    flex: 1;
+    overflow-y: auto;
+}
+
+.mobile-menu-links a {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem 2rem;
+    color: #7a5c2e;
+    text-decoration: none;
+    border-bottom: 1px solid #f8f3ed;
+    transition: all 0.2s ease;
+    font-size: 1rem;
+    font-weight: 500;
+}
+
+.mobile-menu-links a:hover {
+    background: #f8f3ed;
+    padding-left: 2.5rem;
+}
+
+.mobile-menu-links a i {
+    color: #e6b8a2;
+    width: 20px;
+    font-size: 1.1rem;
+}
+
+/* Mobile Styles */
+@media (max-width: 768px) {
+    .burger-menu {
+        display: flex;
+    }
+    
+    /* Keep desktop nav for horizontal scrolling */
+    .desktop-nav {
+        /* Your existing nav-links styles for desktop horizontal scroll */
+    }
+}
+
+/* Desktop Styles */
+@media (min-width: 769px) {
+    .burger-menu {
+        display: none !important;
+    }
+    
+    .mobile-menu,
+    .mobile-menu-overlay {
+        display: none !important;
+    }
+}
+
+/* Body lock when menu open */
+body.menu-open {
+    overflow: hidden;
+    position: fixed;
+    width: 100%;
+}
+</style>
+</head>
+<body>
+    <!-- Loading Spinner -->
+    <div id="loadingSpinner" class="loading-spinner hidden">
+        <div class="spinner"></div>
+    </div>
+
+    <!-- Header -->
+    <div id="header-delivery-msg">
+        Free delivery in Fquih Ben Salah
+    </div>
+
+    <header>
+        <nav>
+            <div class="logo" onclick="goHome()">
+                <div class="logo-text-vertical">
+                    <span class="logo-script-elegant" style="font-family: 'Great Vibes', cursive; font-size: 3.2rem; color: #7a5c2e; letter-spacing: 2px; margin-bottom: -0.2rem;">Simo</span>
+                    <span class="logo-caps-classic" style="font-family: 'Montserrat', serif; font-size: 1.4rem; color: #a88c5f; letter-spacing: 0.18em; font-weight: 700;">COSMÉTIQUE</span>
+                </div>
+            </div>
+            <div class="nav-icons">
+                <i id="searchIcon" class="fas fa-search"></i>
+                <div class="user-menu">
+                    <i id="userIcon" class="fas fa-user"></i>
+                    <div id="userDropdown" class="user-dropdown">
+                        <a href="#" onclick="showOrders()">My Orders</a>
+                        <a href="#" onclick="showProfile()">Profile</a>
+                        <a href="#" onclick="logoutWrapper()">Logout</a>
+                    </div>
+                </div>
+                <div class="cart-icon" id="cartIcon" onclick="showCart()">
+                    <i class="fas fa-shopping-bag"></i>
+                    <span class="cart-count">0</span>
+                </div>
+            </div>
+            <!-- Burger menu button -->
+            <div class="burger-menu" id="burgerMenu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </nav>
+        
+        <!-- Desktop navigation - horizontal scroll -->
+        <div class="nav-links desktop-nav" id="customerNav">
+            <a href="#" onclick="showHome()">Home</a>
+            <a href="#" onclick="showCategory('makeup')">Makeup</a>
+            <a href="#" onclick="showCategory('nails')">Nails</a>
+            <a href="#" onclick="showCategory('skincare')">Skin Care</a>
+            <a href="#" onclick="showCategory('bodycare')">Body Care</a>
+            <a href="#" onclick="showCategory('accessories')">Accessories</a>
+            <a href="#" onclick="showCategory('perfumes')">Perfumes</a>
+            <a href="#" onclick="showCategory('hair')">Hair Products</a>
+            <a href="#" onclick="showCategory('baby')">Baby Products</a>
+        </div>
+    </header>
+    
+    <!-- Separate Mobile Menu -->
+    <div class="mobile-menu-overlay" id="mobileOverlay"></div>
+    <div class="mobile-menu" id="mobileMenu">
+        <div class="mobile-menu-header">
+            <span>MENU</span>
+            <button class="close-mobile-menu" id="closeMobileMenu">&times;</button>
+        </div>
+        <div class="mobile-menu-links">
+            <a href="#" onclick="navigateAndClose('home')">
+                <i class="fas fa-home"></i>
+                Home
+            </a>
+            <a href="#" onclick="navigateAndClose('makeup')">
+                <i class="fas fa-palette"></i>
+                Makeup
+            </a>
+            <a href="#" onclick="navigateAndClose('nails')">
+                <i class="fas fa-hand-paper"></i>
+                Nails
+            </a>
+            <a href="#" onclick="navigateAndClose('skincare')">
+                <i class="fas fa-leaf"></i>
+                Skin Care
+            </a>
+            <a href="#" onclick="navigateAndClose('bodycare')">
+                <i class="fas fa-spa"></i>
+                Body Care
+            </a>
+            <a href="#" onclick="navigateAndClose('accessories')">
+                <i class="fas fa-gem"></i>
+                Accessories
+            </a>
+            <a href="#" onclick="navigateAndClose('perfumes')">
+                <i class="fas fa-spray-can"></i>
+                Perfumes
+            </a>
+            <a href="#" onclick="navigateAndClose('hair')">
+                <i class="fas fa-cut"></i>
+                Hair Products
+            </a>
+            <a href="#" onclick="navigateAndClose('baby')">
+                <i class="fas fa-baby"></i>
+                Baby Products
+            </a>
+        </div>
+    </div>
+    <!-- Home Slider -->
+    <div id="home-slider">
+        <img id="slider-img" src="HOME1.jpeg" alt="slide">
+    </div>
+
+    <!-- Main Content for Customers -->
+    <main id="customerContent">
+        <div id="productsContainer" class="products-grid">
+            <!-- Products will be dynamically loaded here -->
+        </div>
+        
+        <!-- Profile Section -->
+        <div id="profileSection" class="profile-section hidden">
+            <h2>My Profile</h2>
+            
+            <!-- Profile Navigation Tabs -->
+            <div class="profile-nav">
+                <button class="profile-nav-btn active" onclick="showProfileTab('info')">
+                    <i class="fas fa-user"></i> Profile Info
+                </button>
+                <button class="profile-nav-btn" onclick="showProfileTab('orders')">
+                    <i class="fas fa-shopping-bag"></i> My Orders
+                </button>
+            </div>
+            
+            <!-- Profile Information Tab -->
+            <div id="profileInfoTab" class="profile-tab">
+                <!-- Profile Information -->
+                <div class="profile-info">
+                    <h3>Personal Information</h3>
+                    <div class="info-grid">
+                        <div class="info-item">
+                            <label>Name:</label>
+                            <span id="profileName">Loading...</span>
+                        </div>
+                        <div class="info-item">
+                            <label>Email:</label>
+                            <span id="profileEmail">Loading...</span>
+                        </div>
+                        <div class="info-item">
+                            <label>Phone:</label>
+                            <span id="profilePhone">Loading...</span>
+                        </div>
+                        <div class="info-item">
+                            <label>Address:</label>
+                            <span id="profileAddress">Loading...</span>
+                        </div>
+                        <div class="info-item">
+                            <label>City:</label>
+                            <span id="profileCity">Loading...</span>
+                        </div>
+                        <div class="info-item">
+                            <label>Member Since:</label>
+                            <span id="profileDate">Loading...</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Change Password Section -->
+                <div class="change-password-section">
+                    <h3>Change Password</h3>
+                    <form id="changePasswordForm">
+                        <div class="form-group">
+                            <label for="currentPassword">Current Password</label>
+                            <input type="password" id="currentPassword" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="newPassword">New Password</label>
+                            <input type="password" id="newPassword" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="confirmPassword">Confirm New Password</label>
+                            <input type="password" id="confirmPassword" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Change Password</button>
+                    </form>
+                </div>
+            </div>
+            
+            <!-- Orders Tab -->
+            <div id="profileOrdersTab" class="profile-tab hidden">
+                <div id="userOrdersContainer">
+                    <!-- User orders will be loaded here -->
+                </div>
+            </div>
+        </div>
+        
+        <!-- Orders Section -->
+        <div id="ordersSection" class="orders-section hidden">
+            <div id="userOrdersContainer">
+                <!-- User orders will be loaded here -->
+            </div>
+        </div>
+    </main>
+
+    <!-- Admin Dashboard -->
+    <div id="adminContent" class="hidden">
+        <div class="admin-dashboard">
+            <!-- Dashboard Stats -->
+            <div class="dashboard-stats">
+                <div class="stat-card">
+                    <i class="fas fa-box"></i>
+                    <h3>Total Products</h3>
+                    <p id="totalProducts">0</p>
+                </div>
+                <div class="stat-card">
+                    <i class="fas fa-shopping-cart"></i>
+                    <h3>Total Orders</h3>
+                    <p id="totalOrders">0</p>
+                </div>
+                <div class="stat-card">
+                    <i class="fas fa-users"></i>
+                    <h3>Total Users</h3>
+                    <p id="totalUsers">0</p>
+                </div>
+                <div class="stat-card">
+                    <i class="fas fa-dollar-sign"></i>
+                    <h3>Revenue</h3>
+                    <p id="totalRevenue">0 MAD</p>
+                </div>
+            </div>
+
+            <!-- Admin Panel -->
+            <div class="admin-panel">
+                <h2 style="color: #7a5c2e; margin-bottom: 2rem;">Admin Dashboard</h2>
+                
+                <div class="admin-nav">
+                    <button class="admin-nav-btn active" onclick="showAdminSection('products')">
+                        <i class="fas fa-box"></i> Products
+                    </button>
+                    <button class="admin-nav-btn" onclick="showAdminSection('categories')">
+                        <i class="fas fa-list"></i> Categories
+                    </button>
+                    <button class="admin-nav-btn" onclick="showAdminSection('orders')">
+                        <i class="fas fa-shopping-cart"></i> Orders
+                    </button>
+                    <button class="admin-nav-btn" onclick="showAdminSection('delivery')">
+                        <i class="fas fa-truck"></i> Delivery Zones
+                    </button>
+                    <button class="admin-nav-btn" onclick="showAdminSection('coupons')">
+                        <i class="fas fa-percent"></i> Coupons
+                    </button>
+                    <button class="admin-nav-btn" onclick="showAdminSection('users')">
+                        <i class="fas fa-users"></i> Users
+                    </button>
+                    <button class="admin-nav-btn" onclick="showAdminSection('reports')">
+                        <i class="fas fa-chart-bar"></i> Reports
+                    </button>
+                    <button class="admin-nav-btn" onclick="showAdminSection('profile')">
+                        <i class="fas fa-user-cog"></i> Profile
+                    </button>
+                </div>
+
+                <!-- Products Management -->
+                <div id="admin-products" class="admin-section">
+                    <h3>Product Management</h3>
+                    
+                    <form id="productForm" style="margin-bottom: 2rem;">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="productName">Product Name</label>
+                                <input type="text" id="productName" value="Test Product" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="productCategory">Category</label>
+                                <select id="productCategory" required>
+                                    <option value="">Select Category</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="productPrice">Base Price (MAD)</label>
+                                <input type="number" id="productPrice" step="0.01" value="100" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="productStock">Stock Quantity</label>
+                                <input type="number" id="productStock" value="50" required>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="productDescription">Description</label>
+                            <textarea id="productDescription" rows="3">High quality cosmetic product</textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="productImage">Product Image</label>
+                            <div class="image-upload-container">
+                                <div class="image-input-group">
+                                    <input type="file" id="productImageFile" accept="image/*" style="display: none;">
+                                    <button type="button" class="btn btn-outline" onclick="document.getElementById('productImageFile').click()">
+                                        <i class="fas fa-upload"></i> Choose Image from PC
+                                    </button>
+                                    <span class="file-info" id="fileInfo">No file selected</span>
+                                </div>
+                                <div class="image-url-group">
+                                    <input type="text" id="productImage" placeholder="Or enter image URL">
+                                    <span class="url-info">Enter URL or upload file</span>
+                                </div>
+                                <div class="image-preview" id="imagePreview" style="display: none;">
+                                    <img id="previewImg" src="" alt="Preview" style="max-width: 200px; max-height: 200px; border-radius: 8px;">
+                                    <button type="button" class="btn btn-small" onclick="clearImagePreview()" style="margin-top: 0.5rem;">
+                                        <i class="fas fa-times"></i> Remove
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Variants</label>
+                            <button type="button" class="btn btn-outline" onclick="showVariantModal()">
+                                <i class="fas fa-plus"></i> Add Variants
+                            </button>
+                            <div id="variantsList" class="variant-summary" style="display: none;">
+                                <div class="variant-summary-title">
+                                    <i class="fas fa-layer-group"></i>
+                                    <span>Product Variants (<span id="variantCount">0</span>)</span>
+                                </div>
+                                <div id="variantSummaryGrid" class="variant-summary-grid">
+                                    <!-- Variants will be displayed here -->
+                                </div>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary">Add Product</button>
+                        <button type="button" class="btn btn-secondary" onclick="clearProductForm()">Clear</button>
+                    </form>
+
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Category</th>
+                                <th>Price</th>
+                                <th>Stock</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="productsTableBody">
+                            <!-- Products will be loaded here -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Categories Management -->
+                <div id="admin-categories" class="admin-section hidden">
+                    <h3>Category Management</h3>
+                    
+                    <form id="categoryForm" style="margin-bottom: 2rem;">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="categoryName">Category Name</label>
+                                <input type="text" id="categoryName" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="categorySlug">Category Slug</label>
+                                <input type="text" id="categorySlug" required>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="categoryDescription">Description</label>
+                            <textarea id="categoryDescription" rows="3"></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="categoryImage">Category Image</label>
+                            <div class="image-upload-container">
+                                <div class="image-input-group">
+                                    <input type="file" id="categoryImageFile" accept="image/*" style="display: none;">
+                                    <button type="button" class="btn btn-outline" onclick="document.getElementById('categoryImageFile').click()">
+                                        <i class="fas fa-upload"></i> Choose Image from PC
+                                    </button>
+                                    <span class="file-info" id="categoryFileInfo">No file selected</span>
+                                </div>
+                                <div class="image-url-group">
+                                    <input type="text" id="categoryImage" placeholder="Or enter image URL">
+                                    <span class="url-info">Enter URL or upload file</span>
+                                </div>
+                                <div class="image-preview" id="categoryImagePreview" style="display: none;">
+                                    <img id="categoryPreviewImg" src="" alt="Preview" style="max-width: 200px; max-height: 200px; border-radius: 8px;">
+                                    <button type="button" class="btn btn-small" onclick="clearCategoryImagePreview()" style="margin-top: 0.5rem;">
+                                        <i class="fas fa-times"></i> Remove
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary">Add Category</button>
+                        <button type="button" class="btn btn-secondary" onclick="clearCategoryForm()">Clear</button>
+                    </form>
+
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Slug</th>
+                                <th>Products</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="categoriesTableBody">
+                            <!-- Categories will be loaded here -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Orders Management -->
+                <div id="admin-orders" class="admin-section hidden">
+                    <h3>Order Management</h3>
+                    
+                    <div style="margin-bottom: 1rem;">
+                        <select id="orderStatusFilter" onchange="filterOrders()">
+                            <option value="">All Orders</option>
+                            <option value="pending">Pending</option>
+                            <option value="confirmed">Confirmed</option>
+                            <option value="shipped">Shipped</option>
+                            <option value="delivered">Delivered</option>
+                            <option value="cancelled">Cancelled</option>
+                        </select>
+                    </div>
+
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Order ID</th>
+                                <th>Customer</th>
+                                <th>Total</th>
+                                <th>Status</th>
+                                <th>Date</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="ordersTableBody">
+                            <!-- Orders will be loaded here -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Delivery Zones Management -->
+                <div id="admin-delivery" class="admin-section hidden">
+                    <h3>Delivery Zone Management</h3>
+                    
+                    <form id="deliveryForm" style="margin-bottom: 2rem;">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="zoneName">Zone Name</label>
+                                <input type="text" id="zoneName" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="zonePrice">Delivery Price (MAD)</label>
+                                <input type="number" id="zonePrice" step="0.01" required>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="zoneCities">Cities (comma separated)</label>
+                            <textarea id="zoneCities" rows="3" placeholder="Fquih Ben Salah, Khouribga, Beni Mellal"></textarea>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary">Add Zone</button>
+                        <button type="button" class="btn btn-secondary" onclick="clearDeliveryForm()">Clear</button>
+                    </form>
+
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Zone Name</th>
+                                <th>Price</th>
+                                <th>Cities</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="deliveryTableBody">
+                            <!-- Delivery zones will be loaded here -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Coupons Management -->
+                <div id="admin-coupons" class="admin-section hidden">
+                    <h3>Coupon Management</h3>
+                    
+                    <form id="couponForm" style="margin-bottom: 2rem;">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="couponCode">Coupon Code</label>
+                                <input type="text" id="couponCode" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="couponType">Discount Type</label>
+                                <select id="couponType" required>
+                                    <option value="percentage">Percentage</option>
+                                    <option value="fixed">Fixed Amount</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="couponValue">Discount Value</label>
+                                <input type="number" id="couponValue" step="0.01" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="couponMinOrder">Minimum Order (MAD)</label>
+                                <input type="number" id="couponMinOrder" step="0.01">
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="couponExpiry">Expiry Date</label>
+                                <input type="date" id="couponExpiry">
+                            </div>
+                            <div class="form-group">
+                                <label for="couponUsageLimit">Usage Limit</label>
+                                <input type="number" id="couponUsageLimit">
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary">Add Coupon</button>
+                        <button type="button" class="btn btn-secondary" onclick="clearCouponForm()">Clear</button>
+                    </form>
+
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Code</th>
+                                <th>Type</th>
+                                <th>Value</th>
+                                <th>Min Order</th>
+                                <th>Expiry</th>
+                                <th>Used/Limit</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="couponsTableBody">
+                            <!-- Coupons will be loaded here -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Users Management -->
+                <div id="admin-users" class="admin-section hidden">
+                    <h2>User Management</h2>
+                    <div id="usersContainer">
+                        <!-- Users will be loaded here -->
+                    </div>
+                </div>
+
+                <!-- Admin Profile Section -->
+                <div id="admin-profile" class="admin-section hidden">
+                    <div class="profile-section" style="margin: 0; padding: 0; box-shadow: none;">
+                        <h2>My Profile</h2>
+                        
+                        <!-- Profile Information -->
+                        <div class="profile-info">
+                            <h3>Personal Information</h3>
+                            <div class="info-grid">
+                                <div class="info-item">
+                                    <label>Name:</label>
+                                    <span id="adminProfileName">Loading...</span>
+                                </div>
+                                <div class="info-item">
+                                    <label>Email:</label>
+                                    <span id="adminProfileEmail">Loading...</span>
+                                </div>
+                                <div class="info-item">
+                                    <label>Phone:</label>
+                                    <span id="adminProfilePhone">Loading...</span>
+                                </div>
+                                <div class="info-item">
+                                    <label>Address:</label>
+                                    <span id="adminProfileAddress">Loading...</span>
+                                </div>
+                                <div class="info-item">
+                                    <label>City:</label>
+                                    <span id="adminProfileCity">Loading...</span>
+                                </div>
+                                <div class="info-item">
+                                    <label>Member Since:</label>
+                                    <span id="adminProfileDate">Loading...</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Change Password Section -->
+                        <div class="change-password-section">
+                            <h3>Change Password</h3>
+                            <form id="adminChangePasswordForm">
+                                <div class="form-group">
+                                    <label for="adminCurrentPassword">Current Password</label>
+                                    <input type="password" id="adminCurrentPassword" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="adminNewPassword">New Password</label>
+                                    <input type="password" id="adminNewPassword" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="adminConfirmPassword">Confirm New Password</label>
+                                    <input type="password" id="adminConfirmPassword" required>
+                                </div>
+                                <button type="submit" class="btn btn-primary">Change Password</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Reports Section -->
+                <div id="admin-reports" class="admin-section hidden">
+                    <h2>Reports & Analytics</h2>
+                    
+                    <!-- Report Filters -->
+                    <div class="report-filters">
+                        <h3><i class="fas fa-filter"></i> Filter Options</h3>
+                        <div class="filter-row">
+                            <div class="filter-group">
+                                <label>Date Range</label>
+                                <select id="dateRange">
+                                    <option value="7">Last 7 Days</option>
+                                    <option value="30" selected>Last 30 Days</option>
+                                    <option value="90">Last 3 Months</option>
+                                    <option value="365">Last Year</option>
+                                    <option value="custom">Custom Range</option>
+                                </select>
+                            </div>
+                            <div class="filter-group">
+                                <label>Start Date</label>
+                                <input type="date" id="startDate">
+                            </div>
+                            <div class="filter-group">
+                                <label>End Date</label>
+                                <input type="date" id="endDate">
+                            </div>
+                            <div class="filter-group">
+                                <label>Category</label>
+                                <select id="categoryFilter">
+                                    <option value="">All Categories</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="report-actions">
+                            <button class="btn btn-primary" onclick="generateReports()">
+                                <i class="fas fa-sync"></i> Generate Reports
+                            </button>
+                            <button class="btn btn-secondary" onclick="exportReports()">
+                                <i class="fas fa-download"></i> Export Data
+                            </button>
+                            <button class="btn btn-secondary" onclick="printReports()">
+                                <i class="fas fa-print"></i> Print Reports
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Summary Cards -->
+                    <div class="report-summary">
+                        <div class="summary-card">
+                            <h4>Total Sales</h4>
+                            <div class="value" id="totalSales">0 MAD</div>
+                        </div>
+                        <div class="summary-card">
+                            <h4>Total Orders</h4>
+                            <div class="value" id="reportTotalOrders">0</div>
+                        </div>
+                        <div class="summary-card">
+                            <h4>Average Order Value</h4>
+                            <div class="value" id="avgOrderValue">0 MAD</div>
+                        </div>
+                        <div class="summary-card">
+                            <h4>Products Sold</h4>
+                            <div class="value" id="productsSold">0</div>
+                        </div>
+                    </div>
+                    
+                    <!-- Product Performance Report -->
+                    <div class="report-card">
+                        <h3><i class="fas fa-chart-line"></i> Product Performance Report</h3>
+                        <div class="report-table">
+                            <table>
+                        <thead>
+                            <tr>
+                                        <th>Product</th>
+                                        <th>Category</th>
+                                        <th>Units Sold</th>
+                                        <th>Revenue</th>
+                                        <th>Profit Margin</th>
+                                        <th>Stock Level</th>
+                            </tr>
+                        </thead>
+                                <tbody id="productReportTable">
+                                    <!-- Product report data will be loaded here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+                    
+                    <!-- Sales Chart -->
+                    <!-- Sales Chart -->
+<div class="chart-container">
+    <h3><i class="fas fa-chart-area"></i> Sales Trend</h3>
+    <div class="chart-wrapper">
+        <canvas id="salesChart"></canvas>
+    </div>
+</div>
+
+<!-- Category Performance -->
+<div class="chart-container">
+    <h3><i class="fas fa-chart-pie"></i> Sales by Category</h3>
+    <div class="chart-wrapper">
+        <canvas id="categoryChart"></canvas>
+    </div>
+</div>
+                    
+                    <!-- Top Products -->
+                    <div class="report-card">
+                        <h3><i class="fas fa-trophy"></i> Top Performing Products</h3>
+                        <div class="report-table">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Rank</th>
+                                        <th>Product</th>
+                                        <th>Units Sold</th>
+                                        <th>Revenue</th>
+                                        <th>Growth</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="topProductsTable">
+                                    <!-- Top products data will be loaded here -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    
+                    <!-- Order Status Distribution -->
+                    <div class="report-card">
+                        <h3><i class="fas fa-chart-donut"></i> Order Status Distribution</h3>
+                        <div class="report-table">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Status</th>
+                                        <th>Count</th>
+                                        <th>Percentage</th>
+                                        <th>Revenue</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="orderStatusTable">
+                                    <!-- Order status data will be loaded here -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Auth Container -->
+    <div id="authContainer" class="auth-container hidden">
+        <div class="auth-tabs">
+            <button class="auth-tab active" onclick="showAuthTab('login')">Login</button>
+            <button class="auth-tab" onclick="showAuthTab('register')">Register</button>
+        </div>
+
+        <!-- Login Form -->
+        <form id="loginForm" class="auth-form">
+            <div class="form-group">
+                <label for="loginEmail">Email</label>
+                <input type="email" id="loginEmail" required>
+            </div>
+            <div class="form-group">
+                <label for="loginPassword">Password</label>
+                <input type="password" id="loginPassword" required>
+            </div>
+            <button type="submit" class="btn btn-primary" style="width: 100%;">Login</button>
+        </form>
+
+        <!-- Register Form -->
+        <form id="registerForm" class="auth-form hidden">
+            <div class="form-group">
+                <label for="registerName">Full Name</label>
+                <input type="text" id="registerName" required>
+            </div>
+            <div class="form-group">
+                <label for="registerEmail">Email</label>
+                <input type="email" id="registerEmail" required>
+            </div>
+            <div class="form-group">
+                <label for="registerPhone">Phone</label>
+                <input type="tel" id="registerPhone" required>
+            </div>
+            <div class="form-group">
+                <label for="registerPassword">Password</label>
+                <input type="password" id="registerPassword" required>
+            </div>
+            <button type="submit" class="btn btn-primary" style="width: 100%;">Register</button>
+        </form>
+    </div>
+
+    <!-- Product Detail Modal -->
+    <div id="productModal" class="modal">
+        <div class="modal-content" style="max-width: 800px;">
+            <button class="close-modal" onclick="closeProductModal()">&times;</button>
+            <div id="productModalContent" style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; align-items: center;">
+                <!-- Product details will be loaded here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Variant Selection Modal (for Buy Now) -->
+    <div id="variantSelectionModal" class="modal">
+        <div class="modal-content" style="max-width: 500px;">
+            <button class="close-modal" onclick="closeVariantSelectionModal()">&times;</button>
+            <h2 style="color: #7a5c2e; margin-bottom: 1.5rem;">Select Options</h2>
+            <div id="variantSelectionContent">
+                <!-- Variant options will be loaded here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Variant Management Modal (for Admin) -->
+    <div id="variantModal" class="modal">
+        <div class="modal-content" style="max-width: 600px;">
+            <button class="close-modal" onclick="closeVariantModal()">&times;</button>
+            <h2 style="color: #7a5c2e; margin-bottom: 1.5rem;">Manage Variants</h2>
+            
+            <div class="variant-form">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Variant Type</label>
+                        <select id="variantType">
+                            <option value="size">Size</option>
+                            <option value="color">Color</option>
+                            <option value="ref">Reference</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Name</label>
+                        <input type="text" id="variantName" placeholder="e.g., 50ml, Red">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Price (MAD)</label>
+                        <input type="number" id="variantPrice" step="0.01" value="150">
+                    </div>
+                    <div class="form-group">
+                        <label>Stock</label>
+                        <input type="number" id="variantStock" value="10">
+                    </div>
+                </div>
+                <button class="btn btn-primary" onclick="addVariant()">Add Variant</button>
+            </div>
+
+            <div id="tempVariantsList" style="margin-top: 2rem;">
+                <!-- Temporary variants list -->
+            </div>
+
+            <button class="btn btn-secondary" onclick="saveVariants()" style="margin-top: 1rem;">Save All Variants</button>
+        </div>
+    </div>
+
+    <!-- Cart Modal -->
+    <div id="cartModal" class="modal">
+        <div class="modal-content">
+            <button class="close-modal" onclick="closeCartModal()">&times;</button>
+            <h2>Shopping Cart</h2>
+            <div id="cartItems">
+                <!-- Cart items will be loaded here -->
+            </div>
+            <div style="text-align: right; margin-top: 2rem;">
+                <div style="font-size: 1.2rem; font-weight: bold; color: #7a5c2e;">
+                    Total: <span id="cartTotal">0 MAD</span>
+                </div>
+                <button class="btn btn-primary" onclick="proceedToCheckout()" style="margin-top: 1rem;">
+                    Proceed to Checkout
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Users Section -->
+    <div id="admin-users" class="admin-section hidden">
+        <h2>User Management</h2>
+        <div id="usersContainer">
+            <!-- Users will be loaded here -->
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer style="background: #f8f3ed; border-top: 2px solid #a88c5f; padding: 2rem 1rem 1rem 1rem; text-align: center; font-family: 'Georgia', 'Times New Roman', serif; color: #a88c5f; margin-top: 1rem;">
+        <div style="margin-bottom: 0.7rem; font-size: 1.1rem; letter-spacing: 1px;">
+            <strong>Simo Cosmétique</strong> &mdash; Votre destination beauté de confiance
+        </div>
+        <div style="margin-bottom: 0.5rem; font-size: 1rem;">
+            <span style="margin-right: 1.5rem;">Téléphone : <a href="tel:+212626885715" style="color: #a88c5f; text-decoration: none;">(+212) 626-885715</a></span>
+            <span>Instagram : <a href="https://instagram.com/simo_cosmetique" target="_blank" style="color: #a88c5f; text-decoration: none;">@simo_cosmetique</a></span>
+        </div>
+        <div style="font-size: 0.98rem; color: #c9a27d;">
+            &copy; 2024 Simo Cosmétique. Tous droits réservés.
+        </div>
+        <div style="font-size: 1rem; color: #a88c5f; margin-top: 0.5rem;">
+            Adresse : Fquih Ben Salah, Bab Lhed
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
